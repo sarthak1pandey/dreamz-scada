@@ -74,6 +74,9 @@ jobs:
       if: matrix.os == 'windows-latest'
       run: |
         choco install -y nsis
+        # Add NSIS to PATH for subsequent steps
+        $nsisPath = "${env:ProgramFiles(x86)}\\NSIS"
+        if (Test-Path $nsisPath) { echo $nsisPath >> $env:GITHUB_PATH }
       shell: pwsh
 
     - name: Verify NSIS installation
