@@ -62,13 +62,12 @@ jobs:
       env:
         ELECTRON_ARCH: ${{ matrix.arch }}
 
-    - name: Download NSSM
+    - name: Extract NSSM (already in repo)
       if: matrix.os == 'windows-latest'
       run: |
-        curl -L -o nssm.zip https://github.com/kohsuke/nssm/releases/download/2.24/nssm-2.24.zip
-        unzip -d nssm_tmp nssm.zip
-        cp nssm_tmp/nssm-2.24/win64/nssm.exe ./app/electron/
-      shell: bash
+        Expand-Archive -Path ./app/electron/nssm.zip -DestinationPath ./app/electron/nssm_tmp
+        Copy-Item -Path ./app/electron/nssm_tmp/nssm-2.24/win64/nssm.exe -Destination ./app/electron/
+      shell: pwsh
 
     - name: Install NSIS (Windows only)
       if: matrix.os == 'windows-latest'
