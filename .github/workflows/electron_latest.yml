@@ -65,7 +65,7 @@ jobs:
     - name: Download NSSM
       if: matrix.os == 'windows-latest'
       run: |
-        curl -L -o nssm.zip https://nssm.cc/release/nssm-2.24.zip
+        curl -L -o nssm.zip https://github.com/kohsuke/nssm/releases/download/2.24/nssm-2.24.zip
         unzip -d nssm_tmp nssm.zip
         cp nssm_tmp/nssm-2.24/win64/nssm.exe ./app/electron/
       shell: bash
