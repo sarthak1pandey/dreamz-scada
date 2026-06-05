@@ -9,7 +9,7 @@
                                 <app-maps-view [view]="item.content" [hmi]="hmi" [gaugesManager]="gaugesManager" (onGoTo)="onGoToPage($event)"></app-maps-view>
                             </ng-container>
                             <ng-container *ngSwitchDefault>
-                                <app-dreamzScadaView class="lab-body" id="dreamz-scadaView{{i}}" [view]="item.content" [hmi]="hmi" [gaugesManager]="gaugesManager"></app-dreamzScadaView>
+                                <app-dreamz-scada-view class="lab-body" id="dreamz-scadaView{{i}}" [view]="item.content" [hmi]="hmi" [gaugesManager]="gaugesManager"></app-dreamz-scada-view>
                             </ng-container>
                         </ng-container>
                     </div>
