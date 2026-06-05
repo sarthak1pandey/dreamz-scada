@@ -76,6 +76,13 @@ jobs:
         choco install -y nsis
       shell: pwsh
 
+    - name: Verify NSIS installation
+      if: matrix.os == 'windows-latest'
+      run: |
+        where.exe makensis
+        makensis /VERSION
+      shell: pwsh
+
     - name: Copy NSIS installer script
       if: matrix.os == 'windows-latest'
       run: cp ./dreamz/installer/dreamz-scada-installer.nsi ./app/electron/
@@ -84,16 +91,16 @@ jobs:
     - name: Set APP_VERSION env variable
       if: matrix.os == 'windows-latest'
       run: |
-        node -p "require('./client/package.json').version" > version.txt
-        echo "APP_VERSION=$(cat version.txt)" >> $GITHUB_ENV
+        $version = node -p "require('./client/package.json').version"
+        "APP_VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
       working-directory: ./
-      shell: bash
+      shell: pwsh
 
-    - name: Inject version into NSIS script
+    - name: Inject version into NSIS script (PowerShell)
       if: matrix.os == 'windows-latest'
       run: |
-        sed -i "s/!define APP_VERSION \".*\"/!define APP_VERSION \"${APP_VERSION}\"/" ./app/electron/dreamz-scada-installer.nsi
-      shell: bash
+        (Get-Content ./app/electron/dreamz-scada-installer.nsi) -replace '!define APP_VERSION "[^"]*"', "!define APP_VERSION \"$env:APP_VERSION\"" | Set-Content ./app/electron/dreamz-scada-installer.nsi
+      shell: pwsh
 
     - name: Build NSIS installer
       if: matrix.os == 'windows-latest'

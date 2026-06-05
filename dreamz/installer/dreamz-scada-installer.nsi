@@ -17,10 +17,10 @@ Page instfiles
 Section "Install"
   SetOutPath "$INSTDIR"
   ; Include all built files from the Electron build
-  File /r "${{ github.workspace }}\\app\\electron\\build\\*.*"
+  File /r "app/electron/*.*"
 
   ; Include NSSM executable (already added to resources)
-  File "${{ github.workspace }}\\app\\electron\\nssm.exe"
+  File "app/electron/nssm.exe"
 
   ; Create Windows Service using NSSM
   ExecWait '"$INSTDIR\nssm.exe" install "DreamzSCADA" "$INSTDIR\${APP_EXE}"'
