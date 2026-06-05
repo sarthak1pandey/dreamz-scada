@@ -99,8 +99,15 @@ jobs:
     - name: Inject version into NSIS script (PowerShell)
       if: matrix.os == 'windows-latest'
       run: |
-        (Get-Content ./app/electron/dreamz-scada-installer.nsi) -replace '!define APP_VERSION "[^"]*"', "!define APP_VERSION \"$env:APP_VERSION\"" | Set-Content ./app/electron/dreamz-scada-installer.nsi
+        (Get-Content ./app/electron/dreamz-scada-installer.nsi) -replace '\${APP_VERSION}', $env:APP_VERSION | Set-Content ./app/electron/dreamz-scada-installer.nsi
       shell: pwsh
+
+    - name: List Electron directory contents
+      if: matrix.os == 'windows-latest'
+      run: |
+        echo "=== Listing app/electron ==="
+        ls -R app/electron
+      shell: bash
 
     - name: Build NSIS installer
       if: matrix.os == 'windows-latest'
