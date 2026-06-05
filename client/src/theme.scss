@@ -1,6 +1,11 @@
 @use '@angular/material' as mat;
 
-// TODO: As of v15 mat.legacy-core no longer includes default typography styles.
+// Custom color variables
+$primary-color: #1E40AF;
+$primary-light: #0EA5E9;
+$primary-dark: #1E293B;
+$sidebar-bg: #0F172A;
+$header-bg: #1E40AF;
 // If you specify typography styles for the components you use elsewhere, you should delete this line.
 // If you don't need the default component typographies but still want the hierarchy styles,
 // you can delete this line and instead use:

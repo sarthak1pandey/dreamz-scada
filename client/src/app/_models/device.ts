@@ -3,7 +3,7 @@ import { Script } from './script';
 
 export const FuxaServer = {
     id: '0',
-    name: 'FUXA'
+    name: 'Dreamz SCADA'
 };
 
 export const PlaceholderDevice = {
@@ -92,7 +92,7 @@ export class Tag {
     scaleWriteFunction?: string;
     /** Optional JSON encoded params and values for above script */
     scaleWriteParams?: string;
-    /** System Tag used in FUXA Server, example device status connection */
+    /** System Tag used in Dreamz SCADA Server, example device status connection */
     sysType: TagSystemType;
     /** Description */
     description?: string;

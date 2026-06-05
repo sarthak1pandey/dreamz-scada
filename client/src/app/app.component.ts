@@ -50,7 +50,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		console.log(`FUXA v${environment.version}`);
+		console.log(`Dreamz SCADA v${environment.version}`);
 		this.heartbeatService.startHeartbeatPolling();
 
 		// capture events for the token refresh
@@ -154,7 +154,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	isHidden() {
 		const urlEnd = this.location.path();
-		if (!urlEnd || urlEnd.startsWith('/home') || urlEnd === '/lab' || this.isArViewRoute(urlEnd)) {
+		if (!urlEnd || urlEnd.startsWith('/home') || urlEnd === '/lab' || this.isArViewRoute(urlEnd) || urlEnd.startsWith('/landing')) {
 			return true;
 		}
 		return false;
@@ -172,11 +172,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
     showDevNavigation() {
-        const route = this.location.path();
-        if (route.startsWith('/view') || this.isArViewRoute(route)) {
-            return false;
-        }
-        return this.showdev;
+        // Always show the development navigation (FAB) regardless of layout settings.
+        // This ensures the FAB button is visible for accessing Editor, Lab, and Home.
+        return true;
     }
 
     private isArViewRoute(route: string): boolean {
@@ -187,7 +185,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.router.navigate([goto]);
 		this.fabmenu.toggle();
 		//TODO!
-        if (!this.location.path().includes(goto) && ['home', 'lab'].indexOf(goto) !== -1) {
+        if (!this.location.path().includes(goto) && ['home', 'lab', 'landing'].indexOf(goto) !== -1) {
 			if (goto === 'lab') {
 				this.router.navigate(['']);
 				setTimeout(() => {

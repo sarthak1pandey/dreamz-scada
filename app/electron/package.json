@@ -1,7 +1,7 @@
 {
-    "name": "fuxa",
-    "version": "0.0.1",
-    "description": "FUXA is a web-based Process Visualization (SCADA/HMI/Dashboard) software. With FUXA you can create modern process visualizations with individual designs for your machines and real-time data display.",
+    "name": "dreamz-scada",
+    "version": "1.0.0-dreamz",
+    "description": "Dreamz SCADA is a web-based Process Visualization (SCADA/HMI/Dashboard) software by Dreamz Automation.",
     "main": "main.js",
     "scripts": {
         "start": "electron .",
@@ -9,7 +9,7 @@
         "dist": "electron-builder",
         "postinstall": "electron-builder install-app-deps"
     },
-    "author": "frangoteam",
+    "author": "Dreamz Automation <info@dreamz-automation.com>",
     "license": "MIT",
     "devDependencies": {
         "electron": "^39.2.6",
@@ -19,15 +19,16 @@
         "sqlite3": "5.1.5"
     },
     "build": {
-        "appId": "com.frangoteam.fuxa",
-        "productName": "FUXA",
+        "appId": "com.dreamz-automation.dreamz-scada",
+        "productName": "Dreamz SCADA",
         "asar": false,
         "files": [
             "main.js",
             "*.html",
             "server/**/*",
             "client/dist/**/*",
-            "icons/**/*"
+            "icons/**/*",
+            "nssm.exe"
         ],
         "extraResources": [
             {

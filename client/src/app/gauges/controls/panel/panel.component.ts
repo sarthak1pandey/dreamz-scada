@@ -3,7 +3,7 @@ import { GaugeActionsType, GaugeSettings, GaugeStatus, Hmi, Variable } from '../
 import { GaugeBaseComponent } from '../../gauge-base/gauge-base.component';
 import { GaugeDialogType } from '../../gauge-property/gauge-property.component';
 import { Utils } from '../../../_helpers/utils';
-import { FuxaViewComponent } from '../../../fuxa-view/fuxa-view.component';
+import { FuxaViewComponent } from '../../../dreamz-scada-view/dreamz-scada-view.component';
 import { GaugesManager } from '../../gauges.component';
 import { ProjectService } from '../../../_services/project.service';
 

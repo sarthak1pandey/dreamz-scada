@@ -7,7 +7,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { SidenavComponent } from '../sidenav/sidenav.component';
-import { FuxaViewComponent } from '../fuxa-view/fuxa-view.component';
+import { FuxaViewComponent } from '../dreamz-scada-view/dreamz-scada-view.component';
 import { CardsViewComponent } from '../cards-view/cards-view.component';
 
 import { HmiService, ScriptOpenCard, ScriptSetView } from '../_services/hmi.service';
@@ -46,7 +46,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     @ViewChild('sidenav', { static: false }) sidenav: SidenavComponent;
     @ViewChild('matsidenav', { static: false }) matsidenav: MatSidenav;
-    @ViewChild('fuxaview', { static: false }) fuxaview: FuxaViewComponent;
+    @ViewChild('dreamzScadaView', { static: false }) dreamzScadaView: FuxaViewComponent;
     @ViewChild('cardsview', { static: false }) cardsview: CardsViewComponent;
     @ViewChild('alarmsview', { static: false }) alarmsview: AlarmViewComponent;
     @ViewChild('container', { static: false }) container: ElementRef;
@@ -118,7 +118,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
             });
             this.subscriptionOpen = this.hmiService.onOpen.subscribe((viewToOpen: ScriptOpenCard) => {
                 const viewId = this.projectService.getViewId(viewToOpen.viewName);
-                this.fuxaview.onOpenCard(viewId, null, viewId, viewToOpen.options);
+                this.dreamzScadaView.onOpenCard(viewId, null, viewId, viewToOpen.options);
             });
 
             this.language$ = this.languageService.languageConfig$;
@@ -198,7 +198,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         if (viewId === this.viewAsAlarms) {
             this.onAlarmsShowMode('expand');
             this.checkToCloseSideNav();
-        } else if (!this.homeView || viewId !== this.homeView?.id || force || this.fuxaview?.view?.id !== viewId || this.hasPageOptions(options)) {
+        } else if (!this.homeView || viewId !== this.homeView?.id || force || this.dreamzScadaView?.view?.id !== viewId || this.hasPageOptions(options)) {
             const view = this.hmi.views.find(x => x.id === viewId);
             this.setIframe();
             this.showHomeLink = false;
@@ -209,9 +209,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.setBackground();
                 if (this.homeView.type !== this.cardViewType && this.homeView.type !== this.mapsViewType) {
                     this.checkZoom();
-                    this.fuxaview.hmi.layout = this.hmi.layout;
+                    this.dreamzScadaView.hmi.layout = this.hmi.layout;
                     this.applyPageOptions(options);
-                    this.fuxaview.loadHmi(this.homeView);
+                    this.dreamzScadaView.loadHmi(this.homeView);
                 } else if (this.cardsview) {
                     this.cardsview.reload();
                 }
@@ -226,11 +226,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private applyPageOptions(options: any = {}) {
-        if (!this.fuxaview) {
+        if (!this.dreamzScadaView) {
             return;
         }
-        this.fuxaview.sourceDeviceId = options?.sourceDeviceId;
-        this.fuxaview.loadVariableMapping(options?.variablesMapping ?? []);
+        this.dreamzScadaView.sourceDeviceId = options?.sourceDeviceId;
+        this.dreamzScadaView.loadVariableMapping(options?.variablesMapping ?? []);
     }
 
     onGoToLink(event: string) {
@@ -427,9 +427,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.checkZoom();
             }
         }
-        if (this.homeView && this.fuxaview) {
-            this.fuxaview.hmi.layout = this.hmi.layout;
-            this.fuxaview.loadHmi(this.homeView);
+        if (this.homeView && this.dreamzScadaView) {
+            this.dreamzScadaView.hmi.layout = this.hmi.layout;
+            this.dreamzScadaView.loadHmi(this.homeView);
         }
         this.isLoading = false;
         this.securityEnabled = this.projectService.isSecurityEnabled();
@@ -514,13 +514,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         homeEvents.forEach(event => {
             this.onGoToPage(event.actparam, this.hasPageOptions(event.actoptions), event.actoptions);
         });
-        const fuxaViewEvents = events.filter(event => event.action !== 'onpage');
-        let fuxaviewRef = this.fuxaview ?? this.cardsview?.getFuxaView(0);
-        if (!fuxaviewRef) {
+        const dreamzScadaViewEvents = events.filter(event => event.action !== 'onpage');
+        let dreamzScadaViewRef = this.dreamzScadaView ?? this.cardsview?.getFuxaView(0);
+        if (!dreamzScadaViewRef) {
             return;
         }
-        if (fuxaViewEvents.length > 0) {
-            fuxaviewRef.runEvents(fuxaviewRef, ga, ev, fuxaViewEvents);
+        if (dreamzScadaViewEvents.length > 0) {
+            dreamzScadaViewRef.runEvents(dreamzScadaViewRef, ga, ev, dreamzScadaViewEvents);
         }
     }
 
@@ -559,7 +559,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         if (actions) {
             actions.forEach(act => {
                 if (act.type === Utils.getEnumKey(AlarmActionsType, AlarmActionsType.popup)) {
-                    this.fuxaview.openDialog(null, act.params, {});
+                    this.dreamzScadaView.openDialog(null, act.params, {});
                 } else if (act.type === Utils.getEnumKey(AlarmActionsType, AlarmActionsType.setView)) {
                     this.onGoToPage(act.params);
                 } else if (act.type === Utils.getEnumKey(AlarmActionsType, AlarmActionsType.toastMessage)) {

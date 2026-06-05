@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Tagtable name="Default tag table">
+  <Tag name="Motor1_Start" datatype="Bool"
+       address="%Q0.0" hmiVisible="True"
+       comment="Start motor 1"/>
+  <Tag name="Motor1_Speed" datatype="Int"
+       address="%MW10" hmiVisible="True"
+       comment="Motor 1 speed RPM"/>
+  <Tag name="Tank_Level" datatype="Real"
+       address="%MD20" hmiVisible="True"
+       comment="Tank level in percent"/>
+  <Tag name="System_Fault" datatype="Bool"
+       address="%I0.5" hmiVisible="True"
+       comment="System fault indicator"/>
+  <Tag name="Temperature_Setpoint" datatype="Real"
+       address="%MD30" hmiVisible="False"
+       comment="Temperature setpoint (not HMI visible)"/>
+</Tagtable>

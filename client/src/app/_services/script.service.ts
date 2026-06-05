@@ -52,7 +52,7 @@ export class ScriptService {
                 }
             }
         }
-        (window as any).fuxaScriptAPI = api;
+        (window as any).dreamzScadaScriptAPI = api;
     }
 
     runScript(script: Script, toLogEvent: boolean = true): Observable<any> {

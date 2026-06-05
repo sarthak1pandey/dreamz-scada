@@ -5,7 +5,7 @@ import { GaugesManager } from '../gauges/gauges.component';
 import { Hmi, View, CardWidget, CardWidgetType, ViewType } from '../_models/hmi';
 import { GridsterConfig, GridsterItem, GridType, CompactType, GridsterItemComponentInterface } from 'angular-gridster2';
 import { Utils } from '../_helpers/utils';
-import { FuxaViewComponent } from '../fuxa-view/fuxa-view.component';
+import { FuxaViewComponent } from '../dreamz-scada-view/dreamz-scada-view.component';
 
 @Component({
     selector: 'app-cards-view',
@@ -21,7 +21,7 @@ export class CardsViewComponent implements OnInit, AfterViewInit {
     @Input() gaugesManager: GaugesManager;        // gauges.component
     @Output() editCard: EventEmitter<CardWidget> = new EventEmitter();
     @Output() onGoTo: EventEmitter<string> = new EventEmitter<string>();
-    @ViewChildren(FuxaViewComponent) fuxaViews!: QueryList<FuxaViewComponent>;
+    @ViewChildren(FuxaViewComponent) dreamzScadaViews!: QueryList<FuxaViewComponent>;
 
     gridOptions: GridsterConfig;
     dashboard: Array<GridsterItem> = [];
@@ -142,7 +142,7 @@ export class CardsViewComponent implements OnInit, AfterViewInit {
     }
 
     getFuxaView(index: number) {
-        return this.fuxaViews?.toArray()[index];
+        return this.dreamzScadaViews?.toArray()[index];
     }
 
     private itemChange(item, itemComponent) {

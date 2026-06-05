@@ -34,7 +34,7 @@ import { ChartOptions } from '../gui-helpers/ngx-uplot/ngx-uplot.component';
 import { GaugeBaseComponent } from './gauge-base/gauge-base.component';
 import { HtmlImageComponent } from './controls/html-image/html-image.component';
 import { PanelComponent } from './controls/panel/panel.component';
-import { FuxaViewComponent } from '../fuxa-view/fuxa-view.component';
+import { FuxaViewComponent } from '../dreamz-scada-view/dreamz-scada-view.component';
 import { AuthService } from '../_services/auth.service';
 import { DevicesUtils, Tag } from '../_models/device';
 import { HtmlVideoComponent } from './controls/html-video/html-video.component';
@@ -79,7 +79,7 @@ export class GaugesManager {
     constructor(private hmiService: HmiService,
         private authService: AuthService,
         private winRef: WindowRef) {
-        // subscription to the change of variable value, then emit to the gauges of fuxa-view
+        // subscription to the change of variable value, then emit to the gauges of dreamz-scada-view
         this.hmiService.onVariableChanged.subscribe(sig => {
             try {
                 this.onchange.emit(sig);
@@ -87,7 +87,7 @@ export class GaugesManager {
 
             }
         });
-        // subscription to DAQ values, then emit to charts gauges of fuxa-view
+        // subscription to DAQ values, then emit to charts gauges of dreamz-scada-view
         this.hmiService.onDaqResult.subscribe(message => {
             try {
                 if (this.mapChart[message.gid]) {
@@ -247,14 +247,14 @@ export class GaugesManager {
     }
 
     /**
-     * called from fuxa-view, is used to emit message for a refresh of all signals values and the gauges of view
+     * called from dreamz-scada-view, is used to emit message for a refresh of all signals values and the gauges of view
      * @param domViewId
      */
     emitBindedSignals(domViewId: string) {
         this.hmiService.emitMappedSignalsGauge(domViewId);
     }
     /**
-     * called from fuxa-view, bind dom view, gauge with signal (for animation) and event
+     * called from dreamz-scada-view, bind dom view, gauge with signal (for animation) and event
      * @param gaugekey
      * @param gauge
      * @param domViewId
@@ -307,7 +307,7 @@ export class GaugesManager {
 
     /**
      * @param domViewId
-     * called from fuxa-view, remove bind of dom view gauge
+     * called from dreamz-scada-view, remove bind of dom view gauge
      */
     unbindGauge(domViewId: string) {
         // first remove special gauge like chart from memorySigGauges
@@ -353,7 +353,7 @@ export class GaugesManager {
     }
 
     /**
-     * init element of fuxa-view,
+     * init element of dreamz-scada-view,
      * @param ga
      */
     checkElementToInit(ga: GaugeSettings) {
@@ -629,7 +629,7 @@ export class GaugesManager {
     }
 
     /**
-     * called from fuxa-view to emit and send signal value from a gauge event ('key-enter' of input, 'change' of select)
+     * called from dreamz-scada-view to emit and send signal value from a gauge event ('key-enter' of input, 'change' of select)
      * @param event
      */
     putEvent(event: Event) {
@@ -646,7 +646,7 @@ export class GaugesManager {
     }
 
     /**
-     * called from fuxa-view to emit and send signal value from a gauge event (click)
+     * called from dreamz-scada-view to emit and send signal value from a gauge event (click)
      * @param sigid
      * @param val
      */

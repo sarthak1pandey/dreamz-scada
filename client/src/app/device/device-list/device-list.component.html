@@ -15,6 +15,13 @@
             <span>{{'device.list-filter' | translate}}</span>
             <input (keyup)="applyFilter($event.target.value)" style="width: 450px" type="text">
         </div>
+        <div class="my-form-field" style="padding-right: 10px; margin-left: 10px;">
+            <button mat-raised-button color="primary" (click)="tiaFileInput.click()" *ngIf="!readonly && isDeviceToEdit && (deviceSelected.type === deviceType.SiemensS7 || deviceSelected.type === deviceType.OPCUA)" style="height: 28px; line-height: 28px; font-size: 12px; font-weight: 500; padding: 0 12px;">
+                <mat-icon style="font-size: 18px; width: 18px; height: 18px; vertical-align: middle; margin-right: 4px;">upload_file</mat-icon>
+                <span>Import TIA Tags</span>
+            </button>
+            <input type="file" #tiaFileInput style="display: none" (change)="importFromTia($event)" accept=".xml" />
+        </div>
     </div>
     <div class="table-container">
         <div class="table-scroll">

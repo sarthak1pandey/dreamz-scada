@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../_services/project.service';
 import { Hmi, View, ZoomModeType } from '../_models/hmi';
 import { GaugesManager } from '../gauges/gauges.component';
-import { FuxaViewComponent } from '../fuxa-view/fuxa-view.component';
+import { FuxaViewComponent } from '../dreamz-scada-view/dreamz-scada-view.component';
 
 import panzoom from 'panzoom';
 
@@ -16,7 +16,7 @@ import panzoom from 'panzoom';
 })
 export class ViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
-    @ViewChild('fuxaview', {static: true}) fuxaview: FuxaViewComponent;
+    @ViewChild('dreamzScadaview', {static: true}) dreamzScadaView: FuxaViewComponent;
 	@ViewChild('container', {read: ElementRef, static: true}) container: ElementRef;
 
     startView: View = new View();
@@ -70,8 +70,8 @@ export class ViewComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.hmi && this.hmi.views && this.hmi.views.length > 0) {
             this.startView = this.hmi.views.find(x => x.name === this.viewName);
             this.setBackground();
-            if (this.startView && this.fuxaview) {
-                this.fuxaview.loadHmi(this.startView);
+            if (this.startView && this.dreamzScadaView) {
+                this.dreamzScadaView.loadHmi(this.startView);
             }
             if (this.hmi.layout && this.hmi.layout.zoom && ZoomModeType[this.hmi.layout.zoom] === ZoomModeType.enabled) {
                 setTimeout(() => {

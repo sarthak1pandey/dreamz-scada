@@ -46,7 +46,7 @@
     display: none !important;
 }
 
-:host ::ng-deep .fuxa-bubble-marker {
+:host ::ng-deep .dreamz-scada-bubble-marker {
     position: relative;
     display: inline-block;
     transform: translate(-50%, -100%);
@@ -100,7 +100,7 @@
 }
 
 /* Puntatore */
-:host ::ng-deep .fuxa-bubble-marker::after {
+:host ::ng-deep .dreamz-scada-bubble-marker::after {
     content: "";
     position: absolute;
     left: 50%;

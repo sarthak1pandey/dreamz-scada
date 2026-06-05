@@ -17,6 +17,7 @@ const runtime = require('./runtime');
 const authJwt = require('./api/jwt-helper');
 
 const express = require('express');
+const { initAuditDb, auditMiddleware } = require('../dreamz/audit/audit-logger');
 const app = express();
 
 var server;
@@ -299,8 +300,37 @@ events.once('init-runtime-ok', function () {
     startFuxa();
     initWebcamSnapshotCleanup();
 });
+// License check at startup
+const { loadAndValidateLicense, getFingerprint } = require("../dreamz/licensing/license-validator");
 
-// Init FUXA
+const licenseResult = loadAndValidateLicense();
+
+if (!licenseResult.valid) {
+  if (licenseResult.needsActivation) {
+    const fp = getFingerprint();
+    console.log("\n============================================\n");
+    console.log("  DREAMZ SCADA — ACTIVATION REQUIRED\n");
+    console.log("============================================\n");
+    console.log("  Hardware Fingerprint:\n");
+    console.log(" ", fp);
+    console.log("\n  Send this fingerprint to Dreamz Automation\n");
+    console.log("  to receive your license key.\n");
+    console.log("\n  Place license key in:\n");
+    console.log(" ", require("path").join(__dirname, "_appdata/dreamz.license"));
+    console.log("============================================\n");
+  } else {
+    console.error("LICENSE ERROR:", licenseResult.reason);
+  }
+  // Start in demo/view-only mode OR exit — your choice:
+  // process.exit(1);   // hard stop
+  // OR: set a global flag to disable write operations
+  global.DREAMZ_LICENSED = false;
+} else {
+  console.log(`Dreamz SCADA licensed to: ${licenseResult.customerName}`);
+  console.log(`License expires: ${licenseResult.expiryStr} (${licenseResult.daysLeft} days)`);
+  global.DREAMZ_LICENSED = true;
+}// Init FUXA
+
 try {
     FUXA.init(server, io, settings, logger, events);
 } catch (err) {
@@ -358,6 +388,34 @@ const allowCrossDomain = function (req, res, next) {
     next();
 };
 app.use(allowCrossDomain);
+
+// Initialize Dreamz Audit Logger
+try {
+    initAuditDb(workDir);
+    app.use(auditMiddleware);
+    logger.info('[Dreamz] Audit logger initialized');
+} catch (err) {
+    logger.warn('[Dreamz] Audit logger failed to initialize:', err);
+}
+
+// Dreamz License Enforcement Middleware
+app.use((req, res, next) => {
+    // Skip GET requests and license activation/status routes
+    if (req.method === 'GET' || req.path.startsWith('/api/dreamz/license/')) {
+        return next();
+    }
+    
+    // Block mutating requests if unlicensed
+    if (!global.DREAMZ_LICENSED) {
+        return res.status(402).json({ 
+            success: false, 
+            error: 'License activation required to modify SCADA configuration.' 
+        });
+    }
+    
+    next();
+});
+
 app.use('/', express.static(settings.httpStatic));
 app.use('/home', express.static(settings.httpStatic));
 app.use('/home/:viewName', express.static(settings.httpStatic));
@@ -373,6 +431,7 @@ app.use('/_images', express.static(settings.imagesFileDir));
 app.use('/_widgets', express.static(settings.widgetsFileDir));
 app.use('/snapshots', express.static(settings.webcamSnapShotsDir));
 app.use('/ar', express.static(settings.httpStatic));
+app.use('/audit', express.static(settings.httpStatic));
 
 var accessLogStream = fs.createWriteStream(settings.logDir + '/api.log', { flags: 'a' });
 if (runtime.settings.logApiLevel !== 'none') {

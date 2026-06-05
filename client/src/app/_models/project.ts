@@ -16,7 +16,7 @@ export class ProjectData {
     version = '1.01';
     /** Project name */
     name?: string;
-    /** FUXA Server */
+    /** Dreamz SCADA Server */
     server: Device = new Device(Utils.getGUID(DEVICE_PREFIX));
     /** Hmi resource, layout, SVG, etc. */
     hmi: Hmi = new Hmi();

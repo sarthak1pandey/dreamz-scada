@@ -80,7 +80,7 @@ export class LabComponent implements OnInit, OnDestroy {
         if (this.hmi && this.hmi.views && this.hmi.views.length > 0) {
             this.currentView = this.hmi.views[0];
             this.labView = this.hmi.views[0];
-            let oldsel = localStorage.getItem('@frango.webeditor.currentview');
+            let oldsel = localStorage.getItem('@dreamz.webeditor.currentview');
             if (oldsel) {
                 for (let i = 0; i < this.hmi.views.length; i++) {
                     if (this.hmi.views[i].name === oldsel) {

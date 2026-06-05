@@ -35,7 +35,7 @@ export class LogsViewComponent implements AfterViewInit {
     readonly displayColumns = ['ontime', 'type', 'source', 'text'];
     tableView = false;
     content = '';
-    logs = { selected: 'fuxa.log', files: [] };
+    logs = { selected: 'dreamz-scada.log', files: [] };
 
     constructor(private diagnoseService: DiagnoseService,
                 private appService: AppService) { }

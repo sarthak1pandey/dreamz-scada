@@ -51,7 +51,7 @@ export class DeviceComponent implements OnInit, OnDestroy {
         if (this.router.url.indexOf(DEVICE_READONLY) >= 0) {
             this.readonly = true;
         }
-        this.showMode = localStorage.getItem('@frango.devicesview') || this.devicesViewMap;
+        this.showMode = localStorage.getItem('@dreamz.devicesview') || this.devicesViewMap;
     }
 
     ngOnInit() {
@@ -110,7 +110,7 @@ export class DeviceComponent implements OnInit, OnDestroy {
             } catch (e) {
             }
         } else {
-            localStorage.setItem('@frango.devicesview', this.showMode);
+            localStorage.setItem('@dreamz.devicesview', this.showMode);
         }
     }
 
@@ -123,7 +123,7 @@ export class DeviceComponent implements OnInit, OnDestroy {
             }
             return;
         }
-        let mode = localStorage.getItem('@frango.devicesview') || this.devicesViewMap;
+        let mode = localStorage.getItem('@dreamz.devicesview') || this.devicesViewMap;
         this.show(mode);
     }
 
@@ -193,7 +193,7 @@ export class DeviceComponent implements OnInit, OnDestroy {
                 // CSV
                 devices = DevicesUtils.csvToDevices(reader.result.toString(), this.projectService.getScripts());
             }
-            //generate new id and filte fuxa
+            //generate new id and filte dreamz-scada
             let importDev = [];
             if(isTemplate) {
                 devices.forEach((device: Device) => {

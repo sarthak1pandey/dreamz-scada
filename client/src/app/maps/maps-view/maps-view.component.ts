@@ -1,7 +1,7 @@
 import { AfterViewInit, ApplicationRef, Component, ComponentFactoryResolver, ElementRef, EventEmitter, Injector, Input, OnDestroy, Output, ViewChild } from '@angular/core';
 import * as L from 'leaflet';
 import { GaugesManager } from '../../gauges/gauges.component';
-import { FuxaViewComponent } from '../../fuxa-view/fuxa-view.component';
+import { FuxaViewComponent } from '../../dreamz-scada-view/dreamz-scada-view.component';
 import { ProjectService } from '../../_services/project.service';
 import { MatMenuTrigger as MatMenuTrigger } from '@angular/material/menu';
 import { MatDialog as MatDialog } from '@angular/material/dialog';
@@ -78,7 +78,7 @@ export class MapsViewComponent implements AfterViewInit, OnDestroy {
             this.map = L.map('map').setView(startLocation, this.view.property?.startZoom || 13);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; FUXA'
+                attribution: '&copy; Dreamz SCADA'
             }).addTo(this.map);
 
             this.loadMapsResources();
@@ -151,7 +151,7 @@ export class MapsViewComponent implements AfterViewInit, OnDestroy {
                                 ? `<div class="bubble-value" id="${valueHtmlId}">##.##</div>`
                                 : '';
             const markerHtml = `
-            <div class="fuxa-bubble-marker"
+            <div class="dreamz-scada-bubble-marker"
                  style="--bubble-color:${color};
                         --bubble-bg:${background};
                         --bubble-fg:${color};">
@@ -164,7 +164,7 @@ export class MapsViewComponent implements AfterViewInit, OnDestroy {
             </div>`;
             const marker = L.marker([loc.latitude, loc.longitude], {
                 icon: L.divIcon({
-                    className: 'fuxa-bubble-icon',
+                    className: 'dreamz-scada-bubble-icon',
                     html: markerHtml,
                     iconSize: undefined,  // lasciamo che si adatti
                     iconAnchor: [0, 0]    // correggiamo via CSS con transform
@@ -538,7 +538,7 @@ export class MapsViewComponent implements AfterViewInit, OnDestroy {
         if (!options) {
             return;
         }
-        const markerRoot = (element.querySelector('.fuxa-bubble-marker') as HTMLElement) ?? element;
+        const markerRoot = (element.querySelector('.dreamz-scada-bubble-marker') as HTMLElement) ?? element;
         const target = (element.querySelector('.bubble-content') as HTMLElement)
             ?? markerRoot;
 

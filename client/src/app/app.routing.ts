@@ -1,4 +1,4 @@
-﻿import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from './auth.guard';
 
@@ -23,9 +23,12 @@ import { ApiKeysListComponent } from './apikeys/api-keys-list/api-keys-list.comp
 import { PluginsListComponent } from './plugins/plugins-list/plugins-list.component';
 import { ArMarkerListComponent } from './ar/ar-marker-list/ar-marker-list.component';
 import { ArViewComponent } from './ar/ar-view/ar-view.component';
+import { AuditLogComponent } from './audit/audit-log.component';
+import { LandingComponent } from './landing/landing.component';
 
 const appRoutes: Routes = [
-    { path: '', component: HomeComponent},//, canActivate: [AuthGuard] },
+    { path: '', component: LandingComponent},//, canActivate: [AuthGuard] },
+    { path: 'landing', component: LandingComponent},//, canActivate: [AuthGuard] },
     { path: 'home', component: HomeComponent},//, canActivate: [AuthGuard] },
     { path: 'home/:viewName', component: HomeComponent},//, canActivate: [AuthGuard] },
     { path: 'editor', component: EditorComponent, canActivate: [AuthGuard]},
@@ -42,6 +45,7 @@ const appRoutes: Routes = [
     { path: 'language', component: LanguageTextListComponent, canActivate: [AuthGuard] },
     { path: 'logs', component: LogsViewComponent, canActivate: [AuthGuard] },
     { path: 'events', component: LogsViewComponent, canActivate: [AuthGuard] },
+    { path: 'audit', component: AuditLogComponent, canActivate: [AuthGuard] },
     { path: 'view', component: ViewComponent },
     { path: 'mapsLocations', component: MapsLocationListComponent, canActivate: [AuthGuard] },
     { path: 'flows', component: NodeRedFlowsComponent, canActivate: [AuthGuard] },

@@ -1,0 +1,70 @@
+<div *ngIf="status && !status.licensed" class="license-fullscreen-overlay">
+  <div class="license-card">
+    <div class="logo-container">
+      <img src="assets/images/logo.png" alt="Dreamz SCADA Logo" class="dreamz-logo" />
+      <h1 class="app-title">DREAMZ SCADA</h1>
+      <p class="app-subtitle">Industrial Process Automation Platform</p>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="info-section">
+      <h3 class="section-title">License Required</h3>
+      <p class="description">
+        This installation of Dreamz SCADA is unlicensed or the license has expired.
+        Please provide a valid license key registered for this machine's hardware fingerprint.
+      </p>
+
+      <div class="fingerprint-container">
+        <span class="fingerprint-label">Hardware Fingerprint</span>
+        <div class="fingerprint-value-box">
+          <code class="fingerprint-code">{{ status.fingerprint }}</code>
+          <button (click)="copyFingerprint()" class="copy-btn" title="Copy to clipboard">
+            <mat-icon style="font-size: 16px; width: 16px; height: 16px;">content_copy</mat-icon>
+            Copy
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="activation-section">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Enter Activation Key</mat-label>
+        <textarea
+          matInput
+          rows="3"
+          placeholder="Paste JSON + HMAC signature license key here..."
+          [(ngModel)]="licenseKeyInput"
+          [disabled]="loading"
+          class="key-textarea"
+        ></textarea>
+      </mat-form-field>
+
+      <div *ngIf="errorMsg" class="error-banner">
+        <mat-icon class="banner-icon">error_outline</mat-icon>
+        <span class="banner-text">{{ errorMsg }}</span>
+      </div>
+
+      <div *ngIf="successMsg" class="success-banner">
+        <mat-icon class="banner-icon">check_circle_outline</mat-icon>
+        <span class="banner-text">{{ successMsg }}</span>
+      </div>
+
+      <button
+        mat-flat-button
+        color="primary"
+        class="activate-btn"
+        (click)="activateLicense()"
+        [disabled]="loading || !licenseKeyInput.trim()"
+      >
+        <span *ngIf="!loading">Activate System</span>
+        <mat-spinner *ngIf="loading" diameter="24" color="accent" class="inline-spinner"></mat-spinner>
+      </button>
+    </div>
+
+    <div class="footer-links">
+      <span>For licenses, contact: </span>
+      <a href="mailto:info@dreamz-automation.org" class="email-link">info&#64;dreamz-automation.org</a>
+    </div>
+  </div>
+</div>

@@ -98,7 +98,7 @@ export class ProjectService {
                 // this.notifySaveError(msg);
             }
         }, err => {
-            console.error('FUXA onRefreshProject error', err);
+            console.error('Dreamz SCADA onRefreshProject error', err);
         });
         return true;
     }
@@ -129,7 +129,7 @@ export class ProjectService {
                 this.notifyToLoadHmi();
             }
         }, err => {
-            console.error('FUXA load error', err);
+            console.error('Dreamz SCADA load error', err);
         });
     }
 
@@ -160,7 +160,7 @@ export class ProjectService {
     }
 
     saveAs() {
-        let filename = 'fuxa-project.json';
+        let filename = 'dreamz-scada-project.json';
         if (this.getProjectName()) {
             filename = `${this.getProjectName()}.json`;
         }
@@ -171,7 +171,7 @@ export class ProjectService {
 
     exportDevices(type: string) {
         let content = '';
-        const name = this.projectData.name || 'fuxa';
+        const name = this.projectData.name || 'dreamz-scada';
         let filename = `${name}-devices.${type}`;
         const devices = <Device[]>Object.values(this.convertToSave(this.getDevices()));
         if (type === 'csv') {
@@ -199,7 +199,7 @@ export class ProjectService {
     }
 
     exportAlarms() {
-        const name = this.projectData.name || 'fuxa';
+        const name = this.projectData.name || 'dreamz-scada';
         let filename = `${name}-alarms.json`;
         if (this.getProjectName()) {
             filename = `${this.getProjectName()}-alarms.json`;
@@ -1038,7 +1038,7 @@ export class ProjectService {
     }
 
     private notifySaveError(err: any) {
-        console.error('FUXA notifySaveError error', err);
+        console.error('Dreamz SCADA notifySaveError error', err);
         let msg = this.translateService.instant('msg.project-save-error');
         if (err.status === 401) {
             msg = this.translateService.instant('msg.project-save-unauthorized');
@@ -1055,7 +1055,7 @@ export class ProjectService {
     }
 
     private notifyServerError() {
-        console.error('FUXA notifyServerError error');
+        console.error('Dreamz SCADA notifyServerError error');
         let msg = null;
         this.translateService.get('msg.server-connection-error').subscribe((txt: string) => { msg = txt; });
         if (msg) {
@@ -1070,7 +1070,7 @@ export class ProjectService {
     private notifyError(msgCode: string) {
         this.translateService.get(msgCode).subscribe((msg: string) => {
             if (msg) {
-                console.error(`FUXA Error: ${msg}`);
+                console.error(`Dreamz SCADA Error: ${msg}`);
                 this.toastr.error(msg, '', {
                     timeOut: 3000,
                     closeButton: true,
@@ -1312,15 +1312,15 @@ export class ProjectService {
     }
 
     /**
-     * Check to add or remove system Tags, example connection status to add in device FUXA server
+     * Check to add or remove system Tags, example connection status to add in device Dreamz SCADA server
      */
     checkSystemTags() {
         let devices = Object.values(this.projectData.devices).filter((device: Device) => device.id !== FuxaServer.id);
-        let fuxaServer = <Device>this.projectData.devices[FuxaServer.id];
-        if (fuxaServer) {
+        let dreamzScadaServer = <Device>this.projectData.devices[FuxaServer.id];
+        if (dreamzScadaServer) {
             let changed = false;
             devices.forEach((device: Device) => {
-                if (!Object.values(fuxaServer.tags).find((tag: Tag) => tag.sysType === TagSystemType.deviceConnectionStatus && tag.memaddress === device.id)) {
+                if (!Object.values(dreamzScadaServer.tags).find((tag: Tag) => tag.sysType === TagSystemType.deviceConnectionStatus && tag.memaddress === device.id)) {
                     let tag = new Tag(Utils.getGUID(TAG_PREFIX));
                     tag.name = device.name + ' Connection Status';
                     tag.label = device.name + ' Connection Status';
@@ -1328,12 +1328,12 @@ export class ProjectService {
                     tag.memaddress = device.id;
                     tag.sysType = TagSystemType.deviceConnectionStatus;
                     tag.init = tag.value = '';
-                    fuxaServer.tags[tag.id] = tag;
+                    dreamzScadaServer.tags[tag.id] = tag;
                     changed = true;
                 }
             });
             if (changed) {
-                this.setDeviceTags(fuxaServer);
+                this.setDeviceTags(dreamzScadaServer);
             }
         }
         return this.getDevices();

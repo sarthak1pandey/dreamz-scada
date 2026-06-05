@@ -1,9 +1,9 @@
-name: Build FUXA Electron App (Latest)
+name: Build Dreamz SCADA Electron App
 
 on:
-  #push:
-    #branches:
-  #pull_request:
+  push:
+    tags:
+      - 'v*'
   workflow_dispatch:
 
 jobs:
@@ -68,6 +68,38 @@ jobs:
       env:
         ELECTRON_ARCH: ${{ matrix.arch }}
 
+    - name: Download NSSM
+      if: matrix.os == 'windows-latest'
+      run: |
+        curl -L -o nssm.zip https://nssm.cc/release/nssm-2.24.zip
+        unzip -d nssm_tmp nssm.zip
+        cp nssm_tmp/nssm-2.24/win64/nssm.exe ./app/electron/
+      shell: bash
+
+    - name: Copy NSIS installer script
+      if: matrix.os == 'windows-latest'
+      run: cp ./dreamz/installer/dreamz-scada-installer.nsi ./app/electron/
+      shell: bash
+
+    - name: Set APP_VERSION env variable
+      if: matrix.os == 'windows-latest'
+      run: |
+        node -p "require('./client/package.json').version" > version.txt
+        echo "APP_VERSION=$(cat version.txt)" >> $GITHUB_ENV
+      working-directory: ./
+      shell: bash
+
+    - name: Inject version into NSIS script
+      if: matrix.os == 'windows-latest'
+      run: |
+        sed -i "s/!define APP_VERSION \".*\"/!define APP_VERSION \"${APP_VERSION}\"/" ./app/electron/dreamz-scada-installer.nsi
+      shell: bash
+
+    - name: Build NSIS installer
+      if: matrix.os == 'windows-latest'
+      run: makensis ./app/electron/dreamz-scada-installer.nsi
+      shell: bash
+
     - name: Package for Windows
       if: matrix.os == 'windows-latest' && matrix.arch == 'x64'
       run: npx electron-builder --win nsis --x64
@@ -92,15 +124,17 @@ jobs:
       run: |
         mkdir -p artifacts
         if [ "${{ matrix.os }}" = "windows-latest" ]; then
-          mv dist/*.exe artifacts/FUXA-windows-x64.exe
+          mv dist/*.exe artifacts/DreamzSCADA-windows-x64.exe 2>/dev/null || true
+          # Also capture the separate NSIS installer if built
+          find . -maxdepth 1 -name 'DreamzSCADA-*-Setup.exe' -exec mv {} artifacts/ \;
         elif [ "${{ matrix.os }}" = "ubuntu-latest" ] && [ "${{ matrix.arch }}" = "x64" ]; then
-          mv dist/*.AppImage artifacts/FUXA-linux-x64.AppImage
+          mv dist/*.AppImage artifacts/DreamzSCADA-linux-x64.AppImage
         elif [ "${{ matrix.os }}" = "ubuntu-24.04-arm" ] && [ "${{ matrix.arch }}" = "arm64" ]; then
-          mv dist/*.AppImage artifacts/FUXA-linux-arm64.AppImage
+          mv dist/*.AppImage artifacts/DreamzSCADA-linux-arm64.AppImage
         elif [ "${{ matrix.os }}" = "macos-latest" ] && [ "${{ matrix.arch }}" = "x64" ]; then
-          mv dist/*.dmg artifacts/FUXA-macos-x64.dmg
+          mv dist/*.dmg artifacts/DreamzSCADA-macos-x64.dmg
         elif [ "${{ matrix.os }}" = "macos-latest" ]; then
-          mv dist/*.dmg artifacts/FUXA-macos-arm64.dmg
+          mv dist/*.dmg artifacts/DreamzSCADA-macos-arm64.dmg
         fi
       working-directory: ./app/electron
       shell: bash
@@ -108,5 +142,5 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: FUXA-${{ matrix.os }}-${{ matrix.arch }}
+        name: DreamzSCADA-${{ matrix.os }}-${{ matrix.arch }}
         path: app/electron/artifacts/*

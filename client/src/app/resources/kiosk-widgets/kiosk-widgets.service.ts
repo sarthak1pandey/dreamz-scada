@@ -9,8 +9,8 @@ import { MyFileService, TransferResult } from '../../_services/my-file.service';
 })
 export class KioskWidgetsService {
 
-    repoOwner = 'frangoteam';
-    repoName = 'FUXA-SVG-Widgets';
+    repoOwner = 'dreamz-automation';
+    repoName = 'Dreamz SCADA-SVG-Widgets';
     repoBranch = 'main';
     githubApiBaseUrl = `https://api.github.com/repos/${this.repoOwner}/${this.repoName}/contents`;
     resourceWidgets$: Observable<WidgetsResource[]>;

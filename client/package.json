@@ -1,12 +1,12 @@
 {
-  "name": "fuxa",
+  "name": "dreamz-scada",
   "version": "1.3.3-2838",
   "keywords": [],
-  "author": "frangoteam <info@frangoteam.org>",
+  "author": "dreamz-automation <info@dreamz-automation.org>",
   "description": "Web-based Process Visualization (SCADA/HMI/Dashboard) software",
   "repository": {
     "type": "git",
-    "url": "https://github.com/frangoteam/FUXA.git"
+    "url": "https://github.com/dreamz-automation/FUXA.git"
   },
   "scripts": {
     "ng": "ng",

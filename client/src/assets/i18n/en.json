@@ -2,6 +2,8 @@
     "with param": "sample {{value}}",
 
     "app.home": "Home",
+    "app.view": "View",
+    "app.landing": "Home",
     "app.lab": "Lab",
     "app.editor": "Editor",
 
@@ -20,7 +22,7 @@
     "header.edit-users": "Users settings",
     "header.edit-alarms": "Alarms settings",
     "header.edit-texts": "Texts settings",
-    "header.help": "FUXA Help",
+    "header.help": "Dreamz SCADA Help",
     "header.help-tutorial": "Tutorial",
     "header.help-info": "About",
     "header.change-thema": "Switch Theme (beta)",
@@ -29,11 +31,11 @@
 
     "project.name": "Project name",
 
-    "sidenav.title": "FUXA",
+    "sidenav.title": "Dreamz SCADA",
 
-    "tutorial.title": "FUXA Tutorial",
+    "tutorial.title": "Dreamz SCADA Tutorial",
 
-    "dlg.info-title": "FUXA",
+    "dlg.info-title": "Dreamz SCADA",
 
     "dlg.layout-title": "Layout settings",
     "dlg.layout-general": "General",

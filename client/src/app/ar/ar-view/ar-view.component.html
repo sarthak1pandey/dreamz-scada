@@ -3,7 +3,7 @@
 
     <div class="ar-topbar">
         <div>
-            <div class="ar-title">FUXA AR</div>
+            <div class="ar-title">Dreamz SCADA AR</div>
             <div class="ar-status" *ngIf="isCameraActive && detectorAvailable">
                 Camera active - marker scan supported
             </div>
@@ -42,13 +42,13 @@
         <!-- <div class="ar-marker-title">{{ marker.label }}</div> -->
 
         <div class="ar-marker-view" *ngIf="getMarkerView(marker.viewId) as markerView; else missingMarkerView">
-            <app-fuxa-view
+            <app-dreamz-scada-view
                 [id]="'ar-' + marker.id"
                 [view]="markerView"
                 [hmi]="projectService.getHmi()"
                 [gaugesManager]="gaugesManager"
                 [child]="true">
-            </app-fuxa-view>
+            </app-dreamz-scada-view>
         </div>
         <ng-template #missingMarkerView>
             <div class="ar-marker-missing">View not found: {{ marker.viewId }}</div>

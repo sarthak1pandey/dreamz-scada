@@ -1,0 +1,170 @@
+<div class="header-panel">
+  <div class="header-title">
+    <span>Audit Log Compliance Viewer</span>
+  </div>
+  <div class="header-actions">
+    <button mat-raised-button color="accent" (click)="exportCsv()">
+      <mat-icon>download</mat-icon>
+      Export CSV
+    </button>
+  </div>
+</div>
+
+<div class="work-panel-container">
+  <!-- Filters Panel -->
+  <div class="filter-panel">
+    <div class="filter-row">
+      <div class="filter-item">
+        <span class="filter-label">User</span>
+        <input
+          type="text"
+          placeholder="Filter by user..."
+          [(ngModel)]="filterUser"
+          (input)="onFilterChange()"
+          class="filter-input"
+        />
+      </div>
+
+      <div class="filter-item">
+        <span class="filter-label">Method</span>
+        <select [(ngModel)]="filterMethod" (change)="onFilterChange()" class="filter-select">
+          <option value="">All Methods</option>
+          <option value="POST">POST</option>
+          <option value="PUT">PUT</option>
+          <option value="DELETE">DELETE</option>
+          <option value="PATCH">PATCH</option>
+        </select>
+      </div>
+
+      <div class="filter-item">
+        <span class="filter-label">Endpoint</span>
+        <input
+          type="text"
+          placeholder="e.g. /api/project"
+          [(ngModel)]="filterEndpoint"
+          (input)="onFilterChange()"
+          class="filter-input"
+        />
+      </div>
+
+      <div class="filter-item">
+        <span class="filter-label">Start Date</span>
+        <input
+          type="datetime-local"
+          [(ngModel)]="filterStartDate"
+          (change)="onFilterChange()"
+          class="filter-input"
+        />
+      </div>
+
+      <div class="filter-item">
+        <span class="filter-label">End Date</span>
+        <input
+          type="datetime-local"
+          [(ngModel)]="filterEndDate"
+          (change)="onFilterChange()"
+          class="filter-input"
+        />
+      </div>
+
+      <div class="filter-item button-item">
+        <button mat-stroked-button color="warn" (click)="clearFilters()" [disabled]="!filterUser && !filterMethod && !filterEndpoint && !filterStartDate && !filterEndDate">
+          Clear Filters
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="isLoading" class="loading-overlay">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <!-- Table Container -->
+  <div class="table-container">
+    <table mat-table [dataSource]="dataSource" class="audit-table">
+      <!-- Timestamp Column -->
+      <ng-container matColumnDef="timestamp">
+        <th mat-header-cell *matHeaderCellDef>Timestamp</th>
+        <td mat-cell *matCellDef="let element" class="time-cell">
+          {{ element.timestamp }}
+        </td>
+      </ng-container>
+
+      <!-- User Column -->
+      <ng-container matColumnDef="user">
+        <th mat-header-cell *matHeaderCellDef>User ID / API Key</th>
+        <td mat-cell *matCellDef="let element" class="user-cell">
+          <code>{{ element.user }}</code>
+        </td>
+      </ng-container>
+
+      <!-- Method Column -->
+      <ng-container matColumnDef="method">
+        <th mat-header-cell *matHeaderCellDef class="centered-header">Method</th>
+        <td mat-cell *matCellDef="let element" class="centered-cell">
+          <span [class]="'method-badge ' + getMethodClass(element.method)">
+            {{ element.method }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Endpoint Column -->
+      <ng-container matColumnDef="endpoint">
+        <th mat-header-cell *matHeaderCellDef>Endpoint</th>
+        <td mat-cell *matCellDef="let element" class="endpoint-cell">
+          <code>{{ element.endpoint }}</code>
+        </td>
+      </ng-container>
+
+      <!-- Status Code Column -->
+      <ng-container matColumnDef="status_code">
+        <th mat-header-cell *matHeaderCellDef class="centered-header">Status</th>
+        <td mat-cell *matCellDef="let element" class="centered-cell">
+          <span [class]="'status-indicator ' + getStatusClass(element.status_code)">
+            {{ element.status_code }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- IP Column -->
+      <ng-container matColumnDef="ip">
+        <th mat-header-cell *matHeaderCellDef>IP Address</th>
+        <td mat-cell *matCellDef="let element" class="ip-cell">
+          {{ element.ip }}
+        </td>
+      </ng-container>
+
+      <!-- Duration Column -->
+      <ng-container matColumnDef="duration_ms">
+        <th mat-header-cell *matHeaderCellDef class="right-header">Duration</th>
+        <td mat-cell *matCellDef="let element" class="right-cell duration-cell">
+          {{ element.duration_ms }} ms
+        </td>
+      </ng-container>
+
+      <!-- Body Summary Column -->
+      <ng-container matColumnDef="body_summary">
+        <th mat-header-cell *matHeaderCellDef>Payload Summary</th>
+        <td mat-cell *matCellDef="let element" class="body-cell" [title]="element.body_summary">
+          {{ element.body_summary || '-' }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="audit-row"></tr>
+    </table>
+
+    <div *ngIf="dataSource.length === 0 && !isLoading" class="no-records">
+      No audit records found. Try modifying the search filters.
+    </div>
+  </div>
+
+  <mat-paginator
+    [length]="totalRows"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="pageChanged($event)"
+    class="table-pagination"
+  ></mat-paginator>
+</div>

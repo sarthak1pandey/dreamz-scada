@@ -1,14 +1,14 @@
 {
-  "name": "fuxa-server",
-  "version": "1.3.3-2838",
+  "name": "dreamz-scada-server",
+  "version": "1.0.0-dreamz",
   "description": "Web-based Process Visualization (SCADA/HMI/Dashboard) software",
   "main": "main.js",
   "scripts": {
     "test": "mocha --recursive --timeout 10000",
     "start": "node main.js",
-    "build": "tsc"
+    "build": "typescript build"
   },
-  "author": "frangoteam <info@frangoteam.org>",
+  "author": "dreamz-automation <info@dreamz-automation.org>",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -35,6 +35,7 @@
     "jsonwebtoken": "^9.0.3",
     "morgan": "1.10.1",
     "mqtt": "4.3.7",
+    "multer": "^2.1.1",
     "node-red": "^4.1.10",
     "node-schedule": "2.1.1",
     "nodemailer": "^8.0.8",

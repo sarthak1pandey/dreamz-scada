@@ -1,0 +1,42 @@
+[
+  {
+    "id": "tag_motor1_start_001",
+    "name": "Motor1_Start",
+    "label": "Motor1 Start",
+    "type": "Bool",
+    "address": "%Q0.0",
+    "deviceName": "Siemens_PLC_1",
+    "rw": "rw",
+    "description": "Start motor 1"
+  },
+  {
+    "id": "tag_motor1_speed_002",
+    "name": "Motor1_Speed",
+    "label": "Motor1 Speed",
+    "type": "Int",
+    "address": "%MW10",
+    "deviceName": "Siemens_PLC_1",
+    "rw": "r",
+    "description": "Motor 1 speed RPM"
+  },
+  {
+    "id": "tag_tank_level_003",
+    "name": "Tank_Level",
+    "label": "Tank Level",
+    "type": "Real",
+    "address": "%MD20",
+    "deviceName": "Siemens_PLC_1",
+    "rw": "r",
+    "description": "Tank level in percent"
+  },
+  {
+    "id": "tag_system_fault_004",
+    "name": "System_Fault",
+    "label": "System Fault",
+    "type": "Bool",
+    "address": "%I0.5",
+    "deviceName": "Siemens_PLC_1",
+    "rw": "r",
+    "description": "System fault indicator"
+  }
+]

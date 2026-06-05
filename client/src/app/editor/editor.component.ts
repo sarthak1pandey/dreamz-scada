@@ -333,7 +333,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
             this.hmi.views = [];
             this.addView(ProjectService.MainViewName);
         } else {
-            let oldsel = localStorage.getItem('@frango.webeditor.currentview');
+            let oldsel = localStorage.getItem('@dreamz.webeditor.currentview');
             if (!oldsel && this.hmi.views.length) {
                 oldsel = this.hmi.views[0].name;
             }
@@ -1135,7 +1135,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.editorMode = EditorModeType.SVG;
         }
-        localStorage.setItem('@frango.webeditor.currentview', this.currentView.name);
+        localStorage.setItem('@dreamz.webeditor.currentview', this.currentView.name);
         this.loadView(this.currentView);
     }
 
@@ -1196,7 +1196,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
      * Load the left panels state copied in localstorage
      */
     private loadPanelState() {
-        let ps = localStorage.getItem('@frango.webeditor.panelsState');
+        let ps = localStorage.getItem('@dreamz.webeditor.panelsState');
         this.panelsState.enabled = true;
         if (ps) {
             this.panelsState = Utils.mergeDeep(this.panelsState, JSON.parse(ps));
@@ -1211,7 +1211,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
             if (this.panelsState.panelViewHeight < 100) {
                 this.panelsState.panelViewHeight = 100;
             }
-            localStorage.setItem('@frango.webeditor.panelsState', JSON.stringify(this.panelsState));
+            localStorage.setItem('@dreamz.webeditor.panelsState', JSON.stringify(this.panelsState));
         }
     }
     //#endregion

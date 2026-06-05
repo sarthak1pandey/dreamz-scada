@@ -371,7 +371,7 @@ export class NgxUplotComponent implements OnInit, OnDestroy {
     }
 
     private getScaledCursorBind(bind: any = {}) {
-        if (bind?.__fuxaScaled) {
+        if (bind?.__dreamzScadaScaled) {
             return bind;
         }
 
@@ -414,7 +414,7 @@ export class NgxUplotComponent implements OnInit, OnDestroy {
             };
         });
 
-        Object.defineProperty(scaledBind, '__fuxaScaled', { value: true, enumerable: false });
+        Object.defineProperty(scaledBind, '__dreamzScadaScaled', { value: true, enumerable: false });
         return scaledBind;
     }
 

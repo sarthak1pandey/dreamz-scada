@@ -154,9 +154,9 @@
 						<app-maps-view [view]="homeView" [hmi]="hmi" [gaugesManager]="gaugesManager" (onGoTo)="onGoToPage($event)"></app-maps-view>
 					</ng-container>
 					<ng-container *ngSwitchDefault>
-						<app-fuxa-view #fuxaview class="home-body" id="home" [view]="homeView"
+						<app-dreamz-scada-view #dreamzScadaView class="home-body" id="home" [view]="homeView"
 								[hmi]="hmi" [gaugesManager]="gaugesManager" (ongoto)="onGoToPage($event)">
-						</app-fuxa-view>
+						</app-dreamz-scada-view>
 					</ng-container>
 				</ng-container>
 			</ng-container>

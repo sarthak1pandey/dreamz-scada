@@ -1,0 +1,9 @@
+{
+  "consoleMessages": [
+    "[log] Dreamz SCADA v1.3.3-2838",
+    "[log] Angular is running in development mode."
+  ],
+  "errors": [],
+  "networkErrors": [],
+  "pageState": "{\"appRoot\":\"<div _ngcontent-ng-c3561597981=\\\"\\\" id=\\\"main-container\\\" class=\\\"container\\\"><!--bindings={\\n  \\\"ng-reflect-ng-if\\\": \\\"false\\\"\\n}--><!--bindings={\\n  \\\"ng-reflect-ng-if\\\": \\\"false\\\"\\n}--><app-header _ngcontent-ng-c356\",\"angularVersion\":\"not-detected\",\"title\":\"Dreamz SCADA\",\"bodyChildren\":8,\"scripts\":[\"(inline)\",\"http://127.0.0.1:1881/assets/lib/svgeditor/jquery.min.js\",\"http://127.0.0.1:1881/assets/lib/svgeditor/jquery-ui-1.8.17.custom.min.js\",\"http://127.0.0.1:1881/assets/lib/svgeditor/jquery-plugin.min.js\",\"http://127.0.0.1:1881/assets/lib/gauge/gauge.js\",\"http://127.0.0.1:1881/assets/lib/nouislider/nouislider.min.js\",\"http://127.0.0.1:1881/assets/lib/numeral/numeral.min.js\",\"http://127.0.0.1:1881/assets/lib/svgeditor/extensions/ext-bundle.min.js\",\"http://127.0.0.1:1881/assets/lib/svgeditor/fuxa-editor.min.js\",\"http://127.0.0.1:1881/assets/lib/svgeditor/shapes/shapes.js\",\"http://127.0.0.1:1881/assets/lib/svg/svg.min.js\",\"http://127.0.0.1:1881/assets/lib/svg/raphael.min.js\",\"http://127.0.0.1:1881/runtime.js\",\"http://127.0.0.1:1881/polyfills.js\",\"http://127.0.0.1:1881/scripts.js\",\"http://127.0.0.1:1881/vendor.js\",\"http://127.0.0.1:1881/main.js\"],\"errorElements\":0}"
+}

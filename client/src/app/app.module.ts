@@ -50,7 +50,7 @@ import { TagOptionsComponent } from './device/tag-options/tag-options.component'
 import { TopicPropertyComponent } from './device/topic-property/topic-property.component';
 import { DeviceListComponent } from './device/device-list/device-list.component';
 import { DeviceMapComponent } from './device/device-map/device-map.component';
-import { FuxaViewComponent } from './fuxa-view/fuxa-view.component';
+import { FuxaViewComponent } from './dreamz-scada-view/dreamz-scada-view.component';
 import { CardsViewComponent } from './cards-view/cards-view.component';
 import { TesterComponent } from './tester/tester.component';
 import { TesterService } from './tester/tester.service';
@@ -177,7 +177,7 @@ import { FlexDeviceTagComponent } from './gauges/gauge-property/flex-device-tag/
 import { PanelComponent } from './gauges/controls/panel/panel.component';
 import { PanelPropertyComponent } from './gauges/controls/panel/panel-property/panel-property.component';
 import { UserEditComponent } from './users/user-edit/user-edit.component';
-import { FuxaViewDialogComponent } from './fuxa-view/fuxa-view-dialog/fuxa-view-dialog.component';
+import { FuxaViewDialogComponent } from './dreamz-scada-view/dreamz-scada-view-dialog/dreamz-scada-view-dialog.component';
 import { DeviceTagSelectionComponent } from './device/device-tag-selection/device-tag-selection.component';
 import { WebcamPlayerComponent } from './gui-helpers/webcam-player/webcam-player.component';
 import { WebcamPlayerDialogComponent } from './gui-helpers/webcam-player/webcam-player-dialog/webcam-player-dialog.component';
@@ -241,6 +241,10 @@ import { SectionMessageDialogComponent } from './editor/section-message-dialog/s
 import { ArMarkerListComponent } from './ar/ar-marker-list/ar-marker-list.component';
 import { ArMarkerPropertyComponent } from './ar/ar-marker-property/ar-marker-property.component';
 import { ArViewComponent } from './ar/ar-view/ar-view.component';
+import { LicenseOverlayComponent } from './licensing/license-overlay.component';
+import { AuditLogComponent } from './audit/audit-log.component';
+import { LicenseService } from './_services/license.service';
+import { LandingComponent } from './landing/landing.component';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -430,7 +434,10 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
         SectionMessageDialogComponent,
         ArMarkerListComponent,
         ArMarkerPropertyComponent,
-        ArViewComponent
+        ArViewComponent,
+        LicenseOverlayComponent,
+        AuditLogComponent,
+        LandingComponent
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         FormsModule,
@@ -498,6 +505,7 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
         MapsLocationsService,
         LanguageService,
         DeviceAdapterService,
+        LicenseService,
         { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults },
         provideHttpClient(withInterceptorsFromDi())
     ] })

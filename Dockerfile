@@ -40,11 +40,13 @@ RUN if [ "$INSTALL_ODBC" = "true" ]; then \
     fi \
     && mkdir -p /usr/lib/odbc /opt/microsoft
 
-# 3. Copy server source, build, then cleanup
+# 3. Copy server and dreamz source, build, then cleanup
+WORKDIR /usr/src/app/FUXA/dreamz
+COPY dreamz/ ./
 WORKDIR /usr/src/app/FUXA/server
 COPY server/ ./
 RUN rm -rf test
-RUN npm run build
+RUN npx tsc
 
 # --- STAGE 3: Runner ---
 FROM node:18-bookworm-slim
@@ -66,8 +68,9 @@ RUN apt-get update \
 COPY --from=server-builder /usr/lib/odbc/ /usr/lib/odbc/
 COPY --from=server-builder /opt/microsoft/ /opt/microsoft/
 
-# 1. Copy Server
+# 1. Copy Server and Dreamz modules
 COPY --from=server-builder /usr/src/app/FUXA/server ./server
+COPY --from=server-builder /usr/src/app/FUXA/dreamz ./dreamz
 
 # 2. Copy Client
 COPY --from=client-builder /usr/src/app/client/dist ./client/dist

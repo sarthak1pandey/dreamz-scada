@@ -62,6 +62,12 @@ function init(_server, _runtime) {
             apiApp.use(pluginsApi.app());
             diagnoseApi.init(runtime, authMiddleware, verifyGroups);
             apiApp.use(diagnoseApi.app());
+            const tiaImportRoute = require("./tia-import.route");
+            apiApp.use("/api/dreamz", tiaImportRoute);
+            const licenseRoute = require("./license.route");
+            apiApp.use("/api/dreamz", licenseRoute);
+            const auditRoute = require("./audit.route");
+            apiApp.use("/api/dreamz", auditRoute);
             daqApi.init(runtime, authMiddleware, verifyGroups);
             apiApp.use(daqApi.app());
             schedulerApi.init(runtime, authMiddleware, verifyGroups);

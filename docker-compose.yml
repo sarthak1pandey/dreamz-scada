@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  fuxa:
+    build: .
+    ports:
+      - '1881:1881'
+    volumes:
+      - ./server/_appdata:/usr/src/app/FUXA/server/_appdata
+      - ./server/_db:/usr/src/app/FUXA/server/_db
+      - ./server/_logs:/usr/src/app/FUXA/server/_logs
+    restart: unless-stopped

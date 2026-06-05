@@ -32,7 +32,7 @@ export class ResWebApiService implements ResourceStorageService {
     }
 
     getDemoProject(): Observable<any> {
-        return this.http.get<any>('./assets/project.demo.fuxap', {});
+        return this.http.get<any>('./assets/project.demo.dreamz-scadap', {});
     }
 
     getStorageProject(): Observable<any> {

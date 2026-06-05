@@ -8,6 +8,8 @@ import { MatMenuTrigger as MatMenuTrigger } from '@angular/material/menu';
 import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
 import { TranslateService } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+
 
 import { TagOptionType, TagOptionsComponent } from './../tag-options/tag-options.component';
 import { Tag, Device, DeviceType, TAG_PREFIX } from '../../_models/device';
@@ -60,7 +62,8 @@ export class DeviceListComponent implements OnInit, AfterViewInit {
         private translateService: TranslateService,
         private changeDetector: ChangeDetectorRef,
         private projectService: ProjectService,
-        private tagPropertyService: TagPropertyService
+        private tagPropertyService: TagPropertyService,
+        private http: HttpClient
         ) { }
 
     ngOnInit() {
@@ -211,6 +214,45 @@ export class DeviceListComponent implements OnInit, AfterViewInit {
             let tag = new Tag(Utils.getGUID(TAG_PREFIX));
             this.editTag(tag, true);
         }
+    }
+
+    importFromTia(event: any): void {
+        const file = event.target.files[0];
+        if (!file) {
+            return;
+        }
+
+        const deviceName = prompt('Enter device name (must match connection name):', this.deviceSelected ? this.deviceSelected.name : 'Siemens_PLC_1');
+        if (!deviceName) {
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('deviceName', deviceName);
+
+        this.http.post('/api/dreamz/tia-import', formData).subscribe({
+            next: (result: any) => {
+                if (result.success) {
+                    if (result.tags && result.tags.length > 0) {
+                        result.tags.forEach((tag: any) => {
+                            this.deviceSelected.tags[tag.id] = tag;
+                            this.tagsMap[tag.id] = tag;
+                        });
+                        this.bindToTable(this.deviceSelected.tags);
+                        this.projectService.setDeviceTags(this.deviceSelected);
+                        alert(`Successfully imported ${result.tags.length} tags. Skipped: ${result.skipped.length}`);
+                    } else {
+                        alert('No tags imported.');
+                    }
+                } else {
+                    alert('Import failed: ' + result.error);
+                }
+            },
+            error: (err) => {
+                alert('Import failed: ' + (err.error?.message || err.message || err));
+            }
+        });
     }
 
     addOpcTags() {
