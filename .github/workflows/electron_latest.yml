@@ -70,6 +70,12 @@ jobs:
         cp nssm_tmp/nssm-2.24/win64/nssm.exe ./app/electron/
       shell: bash
 
+    - name: Install NSIS (Windows only)
+      if: matrix.os == 'windows-latest'
+      run: |
+        choco install -y nsis
+      shell: pwsh
+
     - name: Copy NSIS installer script
       if: matrix.os == 'windows-latest'
       run: cp ./dreamz/installer/dreamz-scada-installer.nsi ./app/electron/
