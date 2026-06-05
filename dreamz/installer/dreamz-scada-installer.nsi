@@ -1,4 +1,4 @@
-// Dreamz SCADA Installer Script (NSIS)
+; Dreamz SCADA Installer Script (NSIS)
 ; Requires NSIS 3.x
 
 !define APP_NAME     "Dreamz SCADA"
