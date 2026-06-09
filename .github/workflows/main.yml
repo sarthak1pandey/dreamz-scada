@@ -1,0 +1,116 @@
+# --------------------------------------------------------------
+# Wrapper workflow: allows you to start the Dreamz SCADA build
+# manually (or from any branch) without relying on the default branch.
+# --------------------------------------------------------------
+
+name: Run Dreamz SCADA Electron Build (Manual)
+
+# This workflow can be started from the Github UI.
+on:
+  workflow_dispatch:      # <‑‑ manual button in the Actions UI
+    inputs: {}           # no inputs needed – you can add them later if desired
+
+# -----------------------------------------------------------------
+# The jobs below are an exact copy of the original
+# .github/workflows/electron_latest.yml
+# -----------------------------------------------------------------
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: windows-2025   # the only OS we need for the Windows NSIS build
+            arch: x64
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+      - name: Clear npm cache
+        run: npm cache clean --force
+
+      - name: Install server dependencies
+        run: npm install
+        working-directory: ./server
+
+      - name: Install client dependencies
+        run: npm install
+        working-directory: ./client
+
+      - name: Build client
+        run: npm run build -- --configuration=production
+        working-directory: ./client
+
+      - name: Install app dependencies
+        run: npm install
+        working-directory: ./app/electron
+
+      - name: Copy server and client build to app/electron
+        run: |
+          mkdir -p app/electron/server
+          mkdir -p app/electron/client/dist
+          cp -r server/. app/electron/server/
+          cp -r client/dist/. app/electron/client/dist/
+        shell: bash
+
+      - name: Install app dependencies for Electron
+        run: npx electron-builder install-app-deps
+        working-directory: ./app/electron
+        env:
+          ELECTRON_ARCH: ${{ matrix.arch }}
+
+      - name: Extract NSSM (already in repo)
+        if: matrix.os == 'windows-2025'
+        run: |
+          Expand-Archive -Path ./app/electron/nssm.zip -DestinationPath ./app/electron/nssm_tmp
+          Copy-Item -Path ./app/electron/nssm_tmp/nssm-2.24/win64/nssm.exe -Destination ./app/electron/
+        shell: pwsh
+
+      - name: Install NSIS (Windows only)
+        if: matrix.os == 'windows-2025'
+        run: |
+          choco install -y nsis
+          # Add NSIS to PATH for subsequent steps
+          $nsisPath = "${env:ProgramFiles(x86)}\\NSIS"
+          if (Test-Path $nsisPath) { echo $nsisPath >> $env:GITHUB_PATH }
+        shell: pwsh
+
+      - name: Verify NSIS installation
+        if: matrix.os == 'windows-2025'
+        run: |
+          where.exe makensis
+          makensis /VERSION
+        shell: pwsh
+
+      - name: Copy NSIS installer script
+        if: matrix.os == 'windows-2025'
+        run: cp ./dreamz/installer/dreamz-scada-installer.nsi ./app/electron/
+        shell: bash
+
+      - name: Set APP_VERSION env variable
+        if: matrix.os == 'windows-2025'
+        run: |
+          $version = node -p "require('./client/package.json').version"
+          "APP_VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        working-directory: ./
+        shell: pwsh
+
+      - name: Inject version into NSIS script (PowerShell)
+        if: matrix.os == 'windows-2025'
+        run: |
+          (Get-Content ./app/electron/dreamz-scada-installer.nsi) -replace '\${APP_VERSION}', $env:APP_VERSION | Set-Content ./app/electron/dreamz-scada-installer.nsi
+        shell: pwsh
+
+      - name: List Electron directory contents
+        if: matrix.os == 'windows-2025'
+        run: |
+          echo "=== Listing app/electron ==="
+          ls -R
